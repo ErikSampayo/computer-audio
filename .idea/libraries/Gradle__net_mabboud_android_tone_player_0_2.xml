@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: net.mabboud:android-tone-player-0.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/android-tone-player-0.2.aar/fd97494b38093b4c2caf0678d4c0eef7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/android-tone-player-0.2.aar/fd97494b38093b4c2caf0678d4c0eef7/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.mabboud/android-tone-player/0.2/f43fa55985567a407ee7ec509438e80db51af959/android-tone-player-0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

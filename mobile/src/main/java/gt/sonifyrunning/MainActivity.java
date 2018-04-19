@@ -29,6 +29,8 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
+    private Sensor senGyroscope;
+    private Sensor senRotationVector;
     private TextView textView;
     private EditText editText;
     private Button startButton;
@@ -50,7 +52,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.d("tag1", "On Create.");
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        senRotationVector = senSensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
+        senGyroscope = senSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        senSensorManager.registerListener(this, senGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
+        senSensorManager.registerListener(this, senRotationVector, SensorManager.SENSOR_DELAY_FASTEST);
         MainActivity.verifyStoragePermissions(this); //verify/get permission to write file
 
 
@@ -90,10 +96,33 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 String line = ""; //Time(ms), x, y ,z
                 double time = Calendar.getInstance().getTime().getTime() - startTime.getTime();
-                line = String.format("%.00f, %.04f, %.04f, %.04f\n", time, x, y, z);
+                line = String.format("Accel, %.00f, %.04f, %.04f, %.04f\n", time, x, y, z);
                 textView.setText(line);
                 writeToFile(line);
             }
+            if (mySensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
+                float x = sensorEvent.values[0];
+                float y = sensorEvent.values[1];
+                float z = sensorEvent.values[2];
+
+                String line = ""; //Time(ms), x, y ,z
+                double time = Calendar.getInstance().getTime().getTime() - startTime.getTime();
+                line = String.format("RotVec, %.00f, %.04f, %.04f, %.04f\n", time, x, y, z);
+                textView.setText(line);
+                writeToFile(line);
+            }
+            if (mySensor.getType() == Sensor.TYPE_GYROSCOPE) {
+                float x = sensorEvent.values[0];
+                float y = sensorEvent.values[1];
+                float z = sensorEvent.values[2];
+
+                String line = ""; //Time(ms), x, y ,z
+                double time = Calendar.getInstance().getTime().getTime() - startTime.getTime();
+                line = String.format("Gyro, %.00f, %.04f, %.04f, %.04f\n", time, x, y, z);
+                textView.setText(line);
+                writeToFile(line);
+            }
+
         }
     }
 
@@ -110,7 +139,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     protected void onResume() {
         super.onResume();
-        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        senSensorManager.registerListener(this, senGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
+        senSensorManager.registerListener(this, senRotationVector, SensorManager.SENSOR_DELAY_FASTEST);
+
     }
 
     public void writeToFile(String line) {
